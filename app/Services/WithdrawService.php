@@ -30,13 +30,19 @@ class WithdrawService
         ]);
 
         // check status from response api
-
         // save response to db
         $withdraw = Withdraw::create([
+            'account_number' => $store->account_number,
             'status'    => Withdraw::STATUS_PENDING,
             'store_id'  => $store->id,
             'amount'    => $data['amount'],
-            'bank_code' => $store->bank_code
+            'bank_code' => $store->bank_code,
+            'transaction_id' => $response->id,
+            'beneficiary_name' => $response->beneficiary_name,
+            'remark' => $response->remark,
+            'receipt' => $response->receipt,
+            'time_served' => $response->time_served,
+            'fee' => $response->fee,
         ]);
 
         return [
@@ -60,8 +66,33 @@ class WithdrawService
                 env('API_BASIC_AUTH_PASSWORD'),
             ]
         ]);
-
-        return $response;
+    
+        return json_decode($response->getBody());
     }
 
+    public function getWithdrawStatus(string $transactionID)
+    {
+        $disburse = $this->callApiGetDisburse($transactionID);
+        // dd($disburse);
+        $withdraw = Withdraw::
+            where('transaction_id',$transactionID)->
+            update([
+                'status' => $disburse->status,
+                'receipt' => $disburse->receipt,
+                'time_served' => $disburse->time_served,
+            ]);
+        return $disburse;
+    }
+
+    public function callApiGetDisburse(string $transactionID)
+    {
+        $client = new \GuzzleHttp\Client();
+        $response = $client->request('GET', env('API_DISBURSE_SERVICE') . '/disburse/'.$transactionID, [
+            'auth' => [
+                env('API_BASIC_AUTH_USERNAME'),
+                env('API_BASIC_AUTH_PASSWORD'),
+            ]
+        ]);
+        return json_decode($response->getBody());
+    }
 }

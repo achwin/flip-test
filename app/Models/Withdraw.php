@@ -17,8 +17,17 @@ class Withdraw extends Model
      * @var array
      */
     protected $fillable = [
+        'transaction_id',
         'status',
         'nominal',
         'store_id',
+        'amount',
+        'bank_code',
+        'remark',
+        'account_number',
+        'beneficiary_name',
+        'receipt',
+        'fee',
+        'time_served',
     ];
 }

@@ -42,4 +42,11 @@ class WithdrawController extends Controller
 
         $withdrawService->storeWithdraw($store, $request->all());
     }
+
+    public function get(string $transactionID, WithdrawService $withdrawService)
+    {
+        // validation
+        $disburse = $withdrawService->getWithdrawStatus($transactionID);
+        return $disburse;
+    }
 }

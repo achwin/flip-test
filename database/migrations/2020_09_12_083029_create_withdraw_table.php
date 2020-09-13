@@ -17,6 +17,7 @@ class CreateWithdrawTable extends Migration
             $table->id();
             $table->unsignedBigInteger('store_id');
             $table->foreign('store_id')->references('id')->on('stores');
+            $table->string('transaction_id')->nullable();
             $table->bigInteger('amount')->default(0);
             $table->enum('status', ['PENDING', 'SUCCESS', 'FAILED']);
             $table->string('bank_code')->nullable();
@@ -24,7 +25,7 @@ class CreateWithdrawTable extends Migration
             $table->string('beneficiary_name')->nullable();
             $table->string('remark')->nullable();
             $table->string('receipt')->nullable();
-            $table->timestamp('time_served', 0);
+            $table->dateTime('time_served')->nullable();
             $table->bigInteger('fee')->default(0);
             $table->timestamps();
         });
