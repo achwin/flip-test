@@ -19,6 +19,9 @@ class CreateStoreTable extends Migration
             $table->foreign('user_id')->references('id')->on('users');
             $table->string('name');
             $table->bigInteger('saldo');
+            $table->string('transaction_id')->nullable();;
+            $table->string('account_name');
+            $table->string('bank_code')->nullable();
             $table->string('account_number');
             $table->timestamps();
         });

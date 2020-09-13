@@ -26,21 +26,50 @@
                         </div>
 
                         <div class="form-group row">
-                            <label for="rekening" class="col-md-4 col-form-label text-md-right">{{ __('Rekening Tujuan') }}</label>
+                            <label for="account_name" class="col-md-4 col-form-label text-md-right">{{ __('Rekening Tujuan') }}</label>
 
                             <div class="col-md-6">
-                                <input id="rekening" disabled type="text" class="form-control @error('rekening') is-invalid @enderror" name="rekening" value="{{ $store->account_number }}" required autocomplete="saldo" autofocus>
+                                <input id="account_number" disabled type="text" class="form-control @error('account_name') is-invalid @enderror" name="account_name" value="{{ $store->account_number }}" required autocomplete="saldo" autofocus>
                             </div>
                         </div>
 
-
                         <div class="form-group row">
-                            <label for="nominal" class="col-md-4 col-form-label text-md-right">{{ __('Nominal Tarik') }}</label>
+                            <label for="account_name" class="col-md-4 col-form-label text-md-right">{{ __('Rekening Name') }}</label>
 
                             <div class="col-md-6">
-                                <input id="nominal" type="number" class="form-control @error('nominal') is-invalid @enderror" name="nominal" value="{{ old('nominal') }}" required autocomplete="nominal">
+                                <input id="account_name" disabled type="text" class="form-control @error('account_name') is-invalid @enderror" name="account_name" value="{{ $store->account_name }}" required autocomplete="saldo" autofocus>
+                            </div>
+                        </div>
 
-                                @error('nominal')
+                        <div class="form-group row">
+                            <label for="bank_code" class="col-md-4 col-form-label text-md-right">{{ __('Rekening Name') }}</label>
+
+                            <div class="col-md-6">
+                                <input id="bank_code" disabled type="text" class="form-control @error('bank_code') is-invalid @enderror" name="bank_code" value="{{ $store->bank_code }}" required autocomplete="saldo" autofocus>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label for="amount" class="col-md-4 col-form-label text-md-right">{{ __('Nominal Tarik') }}</label>
+
+                            <div class="col-md-6">
+                                <input id="amount" type="number" class="form-control @error('amount') is-invalid @enderror" name="amount" value="{{ old('amount') }}" required autocomplete="nominal">
+
+                                @error('amount')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label for="remark" class="col-md-4 col-form-label text-md-right">{{ __('Note') }}</label>
+
+                            <div class="col-md-6">
+                                <input id="remark" type="text" class="form-control @error('remark') is-invalid @enderror" name="remark" value="{{ old('remark') }}" required autocomplete="remark">
+
+                                @error('remark')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>

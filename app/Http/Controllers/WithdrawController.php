@@ -29,10 +29,17 @@ class WithdrawController extends Controller
         return view('pages.withdraw.create', ['store' => $store]);
     }
 
+    /**
+     * Store withdraw
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
     public function store(Request $request, WithdrawService $withdrawService)
     {
-        // validation
-        $data = $request->all();
-        $withdrawService->storeWithdraw($data);
+        $store = Auth::user()->store;
+        if (is_null($store)) {
+            abort(403, 'Unauthorized action.');
+        }
+
+        $withdrawService->storeWithdraw($store, $request->all());
     }
 }
