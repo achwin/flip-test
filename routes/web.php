@@ -21,8 +21,9 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/withdraw', 'WithdrawController@index')->name('withdraw.index');
-Route::post('/withdraw', 'WithdrawController@store')->name('withdraw.store');
 Route::get('/disburse/{transaction_id}', 'WithdrawController@get')->name('withdraw.get');
+Route::get('/withdraw/add', 'WithdrawController@create')->name('withdraw.create');
+Route::post('/withdraw/add', 'WithdrawController@store')->name('withdraw.store');
 
 Auth::routes();
 

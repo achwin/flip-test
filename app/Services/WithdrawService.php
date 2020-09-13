@@ -77,7 +77,7 @@ class WithdrawService
                     env('API_BASIC_AUTH_PASSWORD'),
                 ]
             ]);
-        
+
             return [
                 'data' => json_decode($response->getBody()),
                 'success' => true,
@@ -89,23 +89,30 @@ class WithdrawService
         }
     }
 
-    public function getWithdrawStatus(string $transactionID)
+    /**
+     * Get withdraw status of transaction
+     *
+     * @param string
+     * @return array
+     */
+    public function getWithdrawStatus(string $transactionID): array
     {
         $response = $this->callApiGetDisburse($transactionID);
         if (!$response['success']) {
-            return '';
+            return ['success' => false];
         }
 
         $disburse = $response['data'];
+
         $withdraw = Withdraw::
-            where('transaction_id',$transactionID)->
-            update([
+            where('transaction_id',$transactionID)
+            ->update([
                 'status' => $disburse->status,
                 'receipt' => $disburse->receipt,
                 'time_served' => $disburse->time_served,
             ]);
-            
-        return $disburse;
+
+        return ['success' => true, 'disburse' => $withdraw];
     }
 
     public function callApiGetDisburse(string $transactionID)
@@ -125,7 +132,9 @@ class WithdrawService
             ];
         } catch (\Throwable $th) {
             return [
-                'success' => false
+                'success' => false,
+                'message_error' => $th->getMessage(),
+                'data' => null
             ];
         }
     }

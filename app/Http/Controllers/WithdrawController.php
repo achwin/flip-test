@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Withdraw;
 use App\Services\WithdrawService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -26,6 +27,17 @@ class WithdrawController extends Controller
     public function index()
     {
         $store = Auth::user()->store;
+        $withdraws = Withdraw::where('store_id', $store->id)->get();
+
+        return view('pages.withdraw.index', [
+            'store' => $store,
+            'withdraws' => $withdraws
+        ]);
+    }
+
+    public function create()
+    {
+        $store = Auth::user()->store;
         return view('pages.withdraw.create', ['store' => $store]);
     }
 
@@ -40,14 +52,17 @@ class WithdrawController extends Controller
             abort(403, 'Unauthorized action.');
         }
 
-        $withdrawService->storeWithdraw($store, $request->all());
+        $response = $withdrawService->storeWithdraw($store, $request->all());
+        if (!$response['success']) {
+            return redirect()->back()->withErrors(['message', 'fail to request']);
+        }
+
+        return redirect()->route('withdraw.index');
     }
 
     public function get(string $transactionID, WithdrawService $withdrawService)
     {
-        // validation
         $disburse = $withdrawService->getWithdrawStatus($transactionID);
-        dd($disburse);
-        return $disburse;
+        return response()->json(['success'=> true, 'disburse' => $disburse]);
     }
 }

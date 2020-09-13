@@ -16,7 +16,7 @@
 
                     My Saldo : {{ number_format($store->saldo) }} <br>
                     <p style="margin-top:20px">
-                        <a href="withdraw" class="btn btn-primary">Tarik</a>
+                        <a href="withdraw" class="btn btn-primary">Withdraw Menu</a>
                     </p>
                 </div>
             </div>
