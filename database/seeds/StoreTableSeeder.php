@@ -12,7 +12,10 @@ class StoresTableSeeder extends Seeder
     public function run()
     {
         factory(App\Models\Store::class)->create([
-            'user_id' => factory(App\User::class)->create()
+            'user_id' => factory(App\User::class)->create([
+                'name' => 'Flip User',
+                'email' => 'flip@gmail.com',
+            ])
         ]);
     }
 }
