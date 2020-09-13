@@ -27,7 +27,7 @@
                             @foreach ($withdraws as $idx => $withdraw)
                             <tr>
                                 <td>{{ $idx + 1 }}</td>
-                                <td>{{ $withdraw->amount }}</td>
+                                <td>{{ number_format($withdraw->amount) }}</td>
                                 <td>{{ $withdraw->status }}</td>
                                 <td>{{ $withdraw->time_served }}</td>
                                 <td>
@@ -37,7 +37,7 @@
                                         -
                                     @endif
                                 </td>
-                                <td>{{ $withdraw->fee }}</td>
+                                <td>{{ number_format($withdraw->fee) }}</td>
                                 <td>
                                     <button class="btn btn-success btn-small" onclick="return refreshStatus({{ $withdraw->transaction_id }})">
                                         Refresh Status
@@ -46,8 +46,9 @@
                             </tr>
                             @endforeach
                         </tbody>
-                    </table>
 
+                    </table>
+                    {{ $withdraws->links() }}
                 </div>
             </div>
         </div>

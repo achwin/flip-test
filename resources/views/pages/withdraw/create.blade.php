@@ -8,9 +8,11 @@
                 <div class="card-header">Withdraw</div>
 
                 <div class="card-body">
-                    @if (session('status'))
-                        <div class="alert alert-success" role="alert">
-                            {{ session('status') }}
+                    @if (session('errors'))
+                        <div class="alert alert-danger" role="alert">
+                            @foreach (session('errors') as $error)
+                                {{ $error }}
+                            @endforeach
                         </div>
                     @endif
 

@@ -36,13 +36,15 @@ class WithdrawService
         }
 
         $disburse = $response['data'];
+
         // check status from response api
         // save response to db
+
         $withdraw = Withdraw::create([
             'account_number' => $store->account_number,
-            'status'    => Withdraw::STATUS_PENDING,
-            'store_id'  => $store->id,
-            'amount'    => $data['amount'],
+            'status' => Withdraw::STATUS_PENDING,
+            'store_id' => $store->id,
+            'amount' => $data['amount'],
             'bank_code' => $store->bank_code,
             'transaction_id' => $disburse->id,
             'beneficiary_name' => $disburse->beneficiary_name,
@@ -67,10 +69,10 @@ class WithdrawService
             $client = new \GuzzleHttp\Client();
             $response = $client->request('POST', env('API_DISBURSE_SERVICE') . '/disburse', [
                 'json' => [
-                    'bank_code'         => $data['bank_code'],
-                    'amount'            => $data['amount'],
-                    'remark'            => $data['remark'],
-                    'account_number'    => $data['account_number'],
+                    'bank_code' => $data['bank_code'],
+                    'amount' => $data['amount'],
+                    'remark' => $data['remark'],
+                    'account_number' => $data['account_number'],
                 ],
                 'auth' => [
                     env('API_BASIC_AUTH_USERNAME'),
@@ -104,8 +106,8 @@ class WithdrawService
 
         $disburse = $response['data'];
 
-        $withdraw = Withdraw::
-            where('transaction_id',$transactionID)
+        $withdraw = Withdraw
+            ::where('transaction_id',$transactionID)
             ->update([
                 'status' => $disburse->status,
                 'receipt' => $disburse->receipt,

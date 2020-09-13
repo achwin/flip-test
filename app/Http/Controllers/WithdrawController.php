@@ -9,6 +9,9 @@ use Illuminate\Support\Facades\Auth;
 
 class WithdrawController extends Controller
 {
+
+    protected const PER_PAGE = 5;
+
     /**
      * Create a new controller instance.
      *
@@ -27,7 +30,10 @@ class WithdrawController extends Controller
     public function index()
     {
         $store = Auth::user()->store;
-        $withdraws = Withdraw::where('store_id', $store->id)->get();
+
+        $withdraws = Withdraw::where('store_id', $store->id)
+            ->orderBy('created_at', 'desc')
+            ->simplePaginate(self::PER_PAGE);
 
         return view('pages.withdraw.index', [
             'store' => $store,
@@ -38,6 +44,10 @@ class WithdrawController extends Controller
     public function create()
     {
         $store = Auth::user()->store;
+        if (is_null($store)) {
+            abort(403, 'Unauthorized action.');
+        }
+
         return view('pages.withdraw.create', ['store' => $store]);
     }
 
@@ -54,7 +64,10 @@ class WithdrawController extends Controller
 
         $response = $withdrawService->storeWithdraw($store, $request->all());
         if (!$response['success']) {
-            return redirect()->back()->withErrors(['message', 'fail to request']);
+            return redirect()
+                ->back()
+                ->withInput()
+                ->withErrors(['amount', 'not enough balance']);
         }
 
         return redirect()->route('withdraw.index');
