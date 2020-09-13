@@ -1,11 +1,15 @@
 <?php
 namespace App\Services;
 
+use App\Jobs\WithdrawStatusChecker;
 use App\Models\Store;
 use App\Models\Withdraw;
 
 class WithdrawService
 {
+    const ERR_NOT_ENOUGH_BALANCE = 'not enaough balance';
+    const ERR_3RD_PARTY_ERROR = 'fail to access 3rd party api';
+
     /**
      * Store withdarw service
      *
@@ -17,8 +21,7 @@ class WithdrawService
         if ($store->saldo < $data['amount']) {
             return [
                 'success' => false,
-                'message' => 'not enough balance',
-                'withdraw' => null,
+                'message' => self::ERR_NOT_ENOUGH_BALANCE,
             ];
         }
 
@@ -29,17 +32,17 @@ class WithdrawService
             'amount' => $data['amount'],
         ]);
 
+        // check status from response api
         if (!$response['success']) {
             return [
+                'message' => self::ERR_3RD_PARTY_ERROR,
                 'success' => false,
             ];
         }
 
         $disburse = $response['data'];
 
-        // check status from response api
         // save response to db
-
         $withdraw = Withdraw::create([
             'account_number' => $store->account_number,
             'status' => Withdraw::STATUS_PENDING,
@@ -54,8 +57,12 @@ class WithdrawService
             'fee' => $disburse->fee,
         ]);
 
+        // update saldo
         $store->saldo = $store->saldo - $data['amount'];
         $store->save();
+
+        // init job for status checker
+        WithdrawStatusChecker::dispatch($disburse->id);
 
         return [
             'success' => true,
@@ -86,7 +93,8 @@ class WithdrawService
             ];
         } catch (\Throwable $th) {
             return [
-                'success' => false
+                'success' => false,
+                'data' => null
             ];
         }
     }
@@ -101,20 +109,21 @@ class WithdrawService
     {
         $response = $this->callApiGetDisburse($transactionID);
         if (!$response['success']) {
-            return ['success' => false];
+            return [
+                'success' => false,
+            ];
         }
 
         $disburse = $response['data'];
 
-        $withdraw = Withdraw
-            ::where('transaction_id',$transactionID)
+        Withdraw::where('transaction_id',$transactionID)
             ->update([
                 'status' => $disburse->status,
                 'receipt' => $disburse->receipt,
                 'time_served' => $disburse->time_served,
             ]);
 
-        return ['success' => true, 'disburse' => $withdraw];
+        return ['success' => true, 'disburse' => $disburse];
     }
 
     public function callApiGetDisburse(string $transactionID)
@@ -135,7 +144,6 @@ class WithdrawService
         } catch (\Throwable $th) {
             return [
                 'success' => false,
-                'message_error' => $th->getMessage(),
                 'data' => null
             ];
         }
