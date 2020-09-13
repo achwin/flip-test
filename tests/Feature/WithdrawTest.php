@@ -17,7 +17,7 @@ class WithdrawTest extends TestCase
      * test for withdraw feature
      * @return void
      */
-    public function testWithdrawService()
+    public function testCreateWithdrawService()
     {
         // prepare data
         $store = factory(Store::class)->create([

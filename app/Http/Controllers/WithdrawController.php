@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Services\WithdrawService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -28,9 +29,10 @@ class WithdrawController extends Controller
         return view('pages.withdraw.create', ['store' => $store]);
     }
 
-    public function store(Request $request)
+    public function store(Request $request, WithdrawService $withdrawService)
     {
         // validation
-        return $request->all();
+        $data = $request->all();
+        $withdrawService->storeWithdraw($data);
     }
 }
