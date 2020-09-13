@@ -47,6 +47,7 @@ class WithdrawController extends Controller
     {
         // validation
         $disburse = $withdrawService->getWithdrawStatus($transactionID);
+        dd($disburse);
         return $disburse;
     }
 }
