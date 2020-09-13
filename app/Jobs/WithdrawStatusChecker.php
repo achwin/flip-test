@@ -48,7 +48,7 @@ class WithdrawStatusChecker implements ShouldQueue
         if (
             is_null($result)
             || is_null($result['disburse'])
-            || $result['disburse']->status === Withdraw::STATUS_PENDING
+            || $result['disburse']['status'] === Withdraw::STATUS_PENDING
         ) {
             // worker to re-check status after one minute
             $this->dispatch($this->transactionID)->delay(now()->addMinutes(self::INTERVAL_CHECKER));

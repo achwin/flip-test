@@ -14,7 +14,6 @@ class WithdrawController extends Controller
 
     /**
      * Create a new controller instance.
-     *
      * @return void
      */
     public function __construct()
@@ -24,7 +23,6 @@ class WithdrawController extends Controller
 
     /**
      * Show the application withdarw.
-     *
      * @return \Illuminate\Contracts\Support\Renderable
      */
     public function index()
@@ -41,6 +39,10 @@ class WithdrawController extends Controller
         ]);
     }
 
+    /**
+     * Show form withdraw
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
     public function create()
     {
         $store = Auth::user()->store;
@@ -73,6 +75,10 @@ class WithdrawController extends Controller
         return redirect()->route('withdraw.index');
     }
 
+    /**
+     * Get status by transaction_id
+     * @return \Illuminate\Http\Response
+     */
     public function get(string $transactionID, WithdrawService $withdrawService)
     {
         $disburse = $withdrawService->getWithdrawStatus($transactionID);

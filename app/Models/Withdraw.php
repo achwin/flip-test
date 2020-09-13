@@ -30,4 +30,25 @@ class Withdraw extends Model
         'fee',
         'time_served',
     ];
+
+    /**
+     * create withdraw data
+     * @return Withdraw
+     */
+    public static function createWithdraw($storeID, $disburse)
+    {
+        return Withdraw::create([
+            'status'            => Withdraw::STATUS_PENDING,
+            'store_id'          => $storeID,
+            'account_number'    => $disburse['account_number'],
+            'amount'            => $disburse['amount'],
+            'bank_code'         => $disburse['bank_code'],
+            'transaction_id'    => $disburse['id'],
+            'beneficiary_name'  => $disburse['beneficiary_name'],
+            'remark'            => $disburse['remark'],
+            'receipt'           => $disburse['receipt'],
+            'time_served'       => $disburse['time_served'],
+            'fee'               => $disburse['fee'],
+        ]);
+    }
 }
