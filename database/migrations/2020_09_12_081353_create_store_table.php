@@ -13,8 +13,10 @@ class CreateStoreTable extends Migration
      */
     public function up()
     {
-        Schema::create('store', function (Blueprint $table) {
+        Schema::create('stores', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('user_id');
+            $table->foreign('user_id')->references('id')->on('users');
             $table->string('name');
             $table->bigInteger('saldo');
             $table->string('account_number');
