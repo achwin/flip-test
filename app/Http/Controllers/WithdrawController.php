@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class HomeController extends Controller
+class WithdrawController extends Controller
 {
     /**
      * Create a new controller instance.
@@ -18,13 +18,19 @@ class HomeController extends Controller
     }
 
     /**
-     * Show the application dashboard.
+     * Show the application withdarw.
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
     public function index()
     {
         $store = Auth::user()->store;
-        return view('home', ['store' => $store]);
+        return view('pages.withdraw.create', ['store' => $store]);
+    }
+
+    public function store(Request $request)
+    {
+        // validation
+        return $request->all();
     }
 }

@@ -14,7 +14,10 @@
                         </div>
                     @endif
 
-                    {{ __('You are logged in!') }}
+                    My Saldo : {{ number_format($store->saldo) }} <br>
+                    <p style="margin-top:20px">
+                        <a href="withdraw" class="btn btn-primary">Tarik</a>
+                    </p>
                 </div>
             </div>
         </div>

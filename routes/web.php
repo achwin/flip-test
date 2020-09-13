@@ -20,3 +20,9 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/withdraw', 'WithdrawController@index')->name('withdraw.index');
+Route::post('/withdraw', 'WithdrawController@store')->name('withdraw.store');
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');
