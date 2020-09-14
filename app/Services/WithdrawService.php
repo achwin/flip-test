@@ -38,6 +38,7 @@ class WithdrawService
                 'amount' => $data['amount'],
             ]);
 
+            $disburse['time_served'] = null;
             // save response to db
             $withdraw = Withdraw::createWithdraw($store->id, $disburse);
 
