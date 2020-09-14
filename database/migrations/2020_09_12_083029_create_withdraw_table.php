@@ -25,7 +25,7 @@ class CreateWithdrawTable extends Migration
             $table->string('beneficiary_name')->nullable();
             $table->string('remark')->nullable();
             $table->string('receipt')->nullable();
-            $table->dateTime('time_served')->nullable();
+            $table->dateTime('time_served')->nullable()->default(null);
             $table->bigInteger('fee')->default(0);
             $table->timestamps();
         });
