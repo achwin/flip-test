@@ -50,7 +50,7 @@ class WithdrawService
             return [ 'success' => true, 'withdraw' => $withdraw,];
         } catch (\Throwable $th) {
             Log::error($th->getMessage());
-            return ['message' => self::ERR_3RD_PARTY_ERROR, 'success' => false];
+            return ['message' => $th->getMessage(), 'success' => false];
         }
     }
 
