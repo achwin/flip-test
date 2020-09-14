@@ -68,8 +68,8 @@ class WithdrawController extends Controller
         if (!$response['success']) {
             return redirect()
                 ->back()
-                ->withInput()
-                ->withErrors(['amount', 'not enough balance']);
+                ->with(['error' => $response['message']])
+                ->withInput();
         }
 
         return redirect()->route('withdraw.index');

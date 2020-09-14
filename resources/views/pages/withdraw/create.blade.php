@@ -8,11 +8,9 @@
                 <div class="card-header">Withdraw</div>
 
                 <div class="card-body">
-                    @if (session('errors'))
+                    @if ($message = Session::get('error'))
                         <div class="alert alert-danger" role="alert">
-                            @foreach (session('errors') as $error)
-                                {{ $error }}
-                            @endforeach
+                            {{ $message }}
                         </div>
                     @endif
 
