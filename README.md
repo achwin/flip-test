@@ -17,8 +17,14 @@ composer install
 # copy env then please edit .env to set your database config
 cp .env.example .env
 
+# generate key for laravel
+php artisan key:generate
+
 # migrate database
 php artisan migrate
+
+# seed the data
+php artisan db:seed
 
 # instal fe dependency and build asset
 npm install && npm run dev
@@ -31,8 +37,16 @@ You need to run php server and php queue worker
 php artisan serve --port=8000
 
 # run php worker
-php artisan queue work
+php artisan queue:work
 ``` 
+
+you can login with
+```
+email: 
+flip@gmail.com
+password: 
+password
+```
 
 ## Testing
 To run testing please make new db for test db and set configuration on `.env.testing`

@@ -4,6 +4,7 @@ namespace App\Services;
 use App\Jobs\WithdrawStatusChecker;
 use App\Models\Store;
 use App\Models\Withdraw;
+use App\Services\SlightlyBigFlip\Client;
 use Illuminate\Support\Facades\Log;
 
 class WithdrawService
@@ -29,7 +30,7 @@ class WithdrawService
             }
 
             // call 3rd party
-            $bigFlip = new \App\Services\SlightlyBigFlip\Client();
+            $bigFlip = app()->make(Client::class);
             $disburse = $bigFlip->createDisbursement([
                 'account_number' => $store->account_number,
                 'bank_code' => $store->bank_code,
@@ -62,7 +63,7 @@ class WithdrawService
     public function getWithdrawStatus(string $transactionID): array
     {
         try {
-            $bigFlip = new \App\Services\SlightlyBigFlip\Client();
+            $bigFlip = app()->make(Client::class);
             $disburse = $bigFlip->getDisbursementByTransactioID($transactionID);
 
             Withdraw::where('transaction_id', $transactionID)
